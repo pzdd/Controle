@@ -1,8 +1,15 @@
 
 import br.ufrn.dca.controle.QuanserClient;
+import br.ufrn.dca.controle.QuanserClientException;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,14 +20,22 @@ import javax.swing.JOptionPane;
  *
  * @author Geraldo
  */
+
+/**
+Biblioteca necessárias:
+    QuanserCliente.jar
+    jcommon-1.0.23
+    jfreechart-1.0.19
+    jfreechart-1.0.19-swt
+*/
 public class Main extends javax.swing.JFrame {
     
     /*Tipos de ondas possiveis*/
-    public static final int degrau = 10;
-    public static final int ondaSenoidal = 20;
-    public static final int ondaQuadrada = 30;
-    public static final int denteDeSerra = 40;
-    public static final int sinalAleatorio = 50;
+    public static final int DEGRAU = 10;
+    public static final int ONDA_SENOIDAL = 20;
+    public static final int ONDA_QUADRADA = 30;
+    public static final int DENTE_DE_SERRA = 40;
+    public static final int SINAL_ALEATORIO = 50;
     
     private int sinalAtual = -1;
 
@@ -44,11 +59,12 @@ public class Main extends javax.swing.JFrame {
          //ao iniciar a Frame já faz a conexão
         try{
             qClient  = new QuanserClient("ip", 12345);
-        }catch(Exception e){
+        }catch(QuanserClientException e){
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,"A conexão falhou");
         }
         initComponents();
+        criandoGrafico();
     }
 
     /**
@@ -101,6 +117,7 @@ public class Main extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jProgressBar2 = new javax.swing.JProgressBar();
@@ -505,15 +522,32 @@ public class Main extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Gráficos"));
 
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 439, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 467, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Nivel 1                                Nivel 2"));
@@ -829,7 +863,7 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton10ActionPerformed
         // TODO add your handling code here:
         if(jRadioButton10.isSelected()){
-            sinalAtual = degrau;
+            sinalAtual = DEGRAU;
         }
         jSpinner5.setVisible(true);
         jSpinner1.setVisible(false);
@@ -847,7 +881,7 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton11ActionPerformed
         // TODO add your handling code here:
         if(jRadioButton11.isSelected()){
-            sinalAtual = ondaSenoidal;
+            sinalAtual = ONDA_SENOIDAL;
         }
         jLabel1.setVisible(true);
         jSpinner5.setVisible(true);
@@ -867,7 +901,7 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton12ActionPerformed
         // TODO add your handling code here:
         if(jRadioButton12.isSelected()){
-            sinalAtual = ondaQuadrada;
+            sinalAtual = ONDA_QUADRADA;
         }
         jLabel1.setVisible(true);
         jSpinner5.setVisible(true);
@@ -887,7 +921,7 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton13ActionPerformed
         // TODO add your handling code here:
         if(jRadioButton13.isSelected()){
-            sinalAtual = denteDeSerra;
+            sinalAtual = DENTE_DE_SERRA;
         }
         jLabel1.setVisible(true);
         jSpinner5.setVisible(true);
@@ -907,7 +941,7 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton14ActionPerformed
         // TODO add your handling code here:
         if(jRadioButton14.isSelected()){
-            sinalAtual = sinalAleatorio;
+            sinalAtual = SINAL_ALEATORIO;
         }
         jLabel1.setVisible(true);
         jLabel2.setVisible(true);
@@ -925,7 +959,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
         // TODO add your handling code here:
-        if(isMalhaAberta && sinalAtual == sinalAleatorio){
+        if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
             //valor minimo
             if(Integer.parseInt(jSpinner1.getValue().toString()) > 4 | Integer.parseInt(jSpinner1.getValue().toString()) < -4){
                //pegar um numero ramdomico 
@@ -941,7 +975,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jSpinner2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner2StateChanged
         // TODO add your handling code here:
-        if(isMalhaAberta && sinalAtual == sinalAleatorio){
+        if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
             //valor minimo
             if(Integer.parseInt(jSpinner2.getValue().toString()) > 4 | Integer.parseInt(jSpinner2.getValue().toString()) < -4){
                //pegar um numero ramdomico 
@@ -957,7 +991,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jSpinner5StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner5StateChanged
         // TODO add your handling code here:
-        if(isMalhaAberta && sinalAtual != sinalAleatorio){
+        if(isMalhaAberta && sinalAtual != SINAL_ALEATORIO){
             //valor minimo
             if(Integer.parseInt(jSpinner5.getValue().toString()) > 4 | Integer.parseInt(jSpinner5.getValue().toString()) < -4){
                //pegar um numero ramdomico 
@@ -968,7 +1002,7 @@ public class Main extends javax.swing.JFrame {
                }
                JOptionPane.showMessageDialog(null, "limite ultrapassado");
             }
-        }else if(!isMalhaAberta && sinalAtual != sinalAleatorio){
+        }else if(!isMalhaAberta && sinalAtual != SINAL_ALEATORIO){
             if(Integer.parseInt(jSpinner5.getValue().toString()) > 30 | Integer.parseInt(jSpinner5.getValue().toString()) < 0){
                //pegar um numero ramdomico 
                if(Integer.parseInt(jSpinner5.getValue().toString()) >30){
@@ -983,7 +1017,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jSpinner4StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner4StateChanged
         // TODO add your handling code here:
-          if(isMalhaAberta && sinalAtual == sinalAleatorio){
+          if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
             //valor minimo
             if(Integer.parseInt(jSpinner4.getValue().toString()) > 60 | Integer.parseInt(jSpinner4.getValue().toString()) < 0){
                //pegar um numero ramdomico 
@@ -999,7 +1033,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jSpinner3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner3StateChanged
         // TODO add your handling code here:
-          if(isMalhaAberta && sinalAtual == sinalAleatorio){
+          if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
             //valor minimo
             if(Integer.parseInt(jSpinner3.getValue().toString()) > 60 | Integer.parseInt(jSpinner3.getValue().toString()) < 0){
                //pegar um numero ramdomico 
@@ -1022,7 +1056,7 @@ public class Main extends javax.swing.JFrame {
             //validando campos vázios ou não selecionados
             if(sinalAtual < 0){
                 erro = erro + "Tipo Sinal";
-            }else if(sinalAtual == ondaQuadrada || sinalAtual == ondaSenoidal || sinalAtual == denteDeSerra){
+            }else if(sinalAtual == ONDA_QUADRADA || sinalAtual == ONDA_SENOIDAL || sinalAtual == DENTE_DE_SERRA){
                 if(jTextField1.getText().isEmpty()){
                    erro = ", Periodo";
                 }
@@ -1042,6 +1076,7 @@ public class Main extends javax.swing.JFrame {
                 jToggleButton1.setText("Start");
             }else{
                 desabilitaEntradaSaida();
+                criandoGrafico();
             }
         }else{
             jToggleButton1.setText("Start");
@@ -1175,6 +1210,22 @@ public class Main extends javax.swing.JFrame {
              //pega as entradas,saida, tipo de onda e o restante dos parametros
          }
     }
+    private void criandoGrafico(){
+        XYSeries series = new XYSeries("Gráfico");
+        //dados do gráfico
+        //esses dados serão oriundos das leitura das threads
+        series.add(1,2);
+        series.add(2,3);
+        series.add(3,1);
+        XYSeriesCollection dados = new XYSeriesCollection(series);
+        //criando um gráfico linear
+        JFreeChart chart = ChartFactory.createXYLineChart("", "x", "y", dados);
+        ChartPanel chartPanel = new ChartPanel(chart);
+        //adicionando a frame
+        jPanel7.add(chartPanel,BorderLayout.CENTER);
+        chartPanel.setSize(445,400);
+        chartPanel.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -1231,6 +1282,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JProgressBar jProgressBar2;
     private javax.swing.JRadioButton jRadioButton1;
