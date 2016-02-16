@@ -30,7 +30,13 @@ public class Main extends javax.swing.JFrame {
 
     XYSeries series = new XYSeries("Gráfico");
 
-    int x = 0;
+    private int x = 0;
+    
+    private int amplitude;
+    private int amplitudeMax;
+    private int amplitudeMin;
+    private double frequencia;
+    private double periodo;
 
     /*Tipos de ondas possiveis*/
     public static final int DEGRAU = 10;
@@ -60,7 +66,7 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         //ao iniciar a Frame já faz a conexão
         try {
-            qClient = new QuanserClient("ip", 12345);
+            qClient = new QuanserClient("10.13.99.69", 20081);
         } catch (QuanserClientException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "A conexão falhou");
@@ -957,6 +963,8 @@ public class Main extends javax.swing.JFrame {
                     jSpinner1.setValue(-4);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
+            }else{
+                amplitudeMin = Integer.parseInt(jSpinner1.getValue().toString());
             }
         }
     }//GEN-LAST:event_jSpinner1StateChanged
@@ -973,6 +981,8 @@ public class Main extends javax.swing.JFrame {
                     jSpinner2.setValue(-4);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
+            }else{
+                amplitudeMax = Integer.parseInt(jSpinner2.getValue().toString());
             }
         }
     }//GEN-LAST:event_jSpinner2StateChanged
@@ -989,6 +999,8 @@ public class Main extends javax.swing.JFrame {
                     jSpinner5.setValue(-4);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
+            }else{
+                amplitude = Integer.parseInt(jSpinner5.getValue().toString());
             }
         } else if (!isMalhaAberta && sinalAtual != SINAL_ALEATORIO) {
             if (Integer.parseInt(jSpinner5.getValue().toString()) > 30 | Integer.parseInt(jSpinner5.getValue().toString()) < 0) {
@@ -999,6 +1011,8 @@ public class Main extends javax.swing.JFrame {
                     jSpinner5.setValue(0);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
+            }else{
+                amplitude = Integer.parseInt(jSpinner5.getValue().toString());
             }
         }
     }//GEN-LAST:event_jSpinner5StateChanged
@@ -1041,15 +1055,31 @@ public class Main extends javax.swing.JFrame {
         if (jToggleButton1.isSelected()) {
             //quando o usuário da start
             jToggleButton1.setText("Stop");
+            //valida no caso sinal aleatorio 
+            if(sinalAtual == SINAL_ALEATORIO && amplitudeMax < amplitudeMin){
+                JOptionPane.showMessageDialog(null, "Amplitude Max < Amplitude Min");
+            }
             //validando campos vázios ou não selecionados
             if (sinalAtual < 0) {
                 erro = erro + "Tipo Sinal";
             } else if (sinalAtual == ONDA_QUADRADA || sinalAtual == ONDA_SENOIDAL || sinalAtual == DENTE_DE_SERRA) {
                 if (jTextField1.getText().isEmpty()) {
                     erro = ", Periodo";
+                }else{
+                    try{
+                        periodo = Double.parseDouble(jTextField1.getText());
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, "Período: formato inválido");
+                    }
                 }
                 if (jTextField2.getText().isEmpty()) {
                     erro = erro + ", Frequencia";
+                }else{
+                    try{
+                        frequencia = Double.parseDouble(jTextField2.getText());
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, "Frequência: formato inválido");
+                    }
                 }
             }
             if (checkSelecionado.size() <= 0) {
@@ -1197,20 +1227,29 @@ public class Main extends javax.swing.JFrame {
 
         }
 
+        @Override
         public void run() {
-            //pega as entradas,saida, tipo de onda e o restante dos parametros
+            try {
+                //leitura
+                double param1 = qClient.read(checkSelecionado.get(0));
+                double param2 = qClient.read(checkSelecionado.get(1));
+                //calculos
+                //travas
+                //escrita
+            } catch (QuanserClientException ex) {
+                JOptionPane.showMessageDialog(null, "Erro na leitura");
+            }
+            
         }
     }
 
     private void criandoGrafico() {
-
         //dados do gráfico
         //esses dados serão oriundos das leitura das threads
-        double a = Math.toRadians(x);
         new Thread() {
             public void run() {
                 while (jToggleButton1.isSelected() && sinalAtual == DEGRAU) {
-                    series.add(x++, 10);
+                    series.add(x++, amplitude);
                     //para testes
                     try {
                         Thread.sleep(10);
@@ -1220,7 +1259,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == ONDA_SENOIDAL) {
                     double a = Math.toRadians(x);
-                    series.add(x++, Math.sin(a));
+                    series.add(x++, amplitude*Math.sin(a*frequencia));
                     //para testes
                     try {
                         Thread.sleep(10);
@@ -1229,7 +1268,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == ONDA_QUADRADA) {
-                    series.add(x++, Math.signum(Math.sin(100 * 2 * Math.PI * x / 44100)));
+                    series.add(x++, amplitude * Math.signum(Math.sin(frequencia * 2 * Math.PI * x / 60)));
                     //para testes
                     try {
                         Thread.sleep(10);
@@ -1238,7 +1277,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == DENTE_DE_SERRA) {
-                    series.add(x++, 0.5 * Math.asin(Math.sin(450 * 2 * Math.PI * x / 44100)));
+                    series.add(x++, Math.asin(Math.sin(1 * 2 * Math.PI * x/ 60)));
                     //para testes
                     try {
                         Thread.sleep(10);
