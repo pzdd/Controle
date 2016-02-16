@@ -4,6 +4,8 @@ import br.ufrn.dca.controle.QuanserClientException;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -20,23 +22,23 @@ import org.jfree.data.xy.XYSeriesCollection;
  *
  * @author Geraldo
  */
-
 /**
-Biblioteca necessárias:
-    QuanserCliente.jar
-    jcommon-1.0.23
-    jfreechart-1.0.19
-    jfreechart-1.0.19-swt
-*/
+ * Biblioteca necessárias: QuanserCliente.jar jcommon-1.0.23 jfreechart-1.0.19
+ * jfreechart-1.0.19-swt
+ */
 public class Main extends javax.swing.JFrame {
-    
+
+    XYSeries series = new XYSeries("Gráfico");
+
+    int x = 0;
+
     /*Tipos de ondas possiveis*/
     public static final int DEGRAU = 10;
     public static final int ONDA_SENOIDAL = 20;
     public static final int ONDA_QUADRADA = 30;
     public static final int DENTE_DE_SERRA = 40;
     public static final int SINAL_ALEATORIO = 50;
-    
+
     private int sinalAtual = -1;
 
     /*Informa qual  radioButton está selecionado*/
@@ -47,21 +49,21 @@ public class Main extends javax.swing.JFrame {
 
     /*Quantos podem ser selecionados ? */
     private int qtdCheckSelecionado = 3;
-    
+
     /*Verifica se é malha aberta*/
     private boolean isMalhaAberta = true;
-    
+
     private int offSet = 0;
-    
+
     private QuanserClient qClient;
 
     public Main() {
-         //ao iniciar a Frame já faz a conexão
-        try{
-            qClient  = new QuanserClient("ip", 12345);
-        }catch(QuanserClientException e){
+        //ao iniciar a Frame já faz a conexão
+        try {
+            qClient = new QuanserClient("ip", 12345);
+        } catch (QuanserClientException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,"A conexão falhou");
+            JOptionPane.showMessageDialog(null, "A conexão falhou");
         }
         initComponents();
         criandoGrafico();
@@ -698,17 +700,15 @@ public class Main extends javax.swing.JFrame {
                 System.out.print(checkSelecionado.size() + " " + qtdCheckSelecionado);
             } else {
                 jCheckBox1.setSelected(false);
-                JOptionPane.showMessageDialog(null,"Limite Atingido!");
+                JOptionPane.showMessageDialog(null, "Limite Atingido!");
             }
 
         } else //verifica se aquele elemento está na lista
-        {
-            if (checkSelecionado.contains(1)) {
+         if (checkSelecionado.contains(1)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(1));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
-        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -720,17 +720,15 @@ public class Main extends javax.swing.JFrame {
                 System.out.print(checkSelecionado.size() + " " + qtdCheckSelecionado);
             } else {
                 jCheckBox2.setSelected(false);
-                JOptionPane.showMessageDialog(null,"Limite Atingido!");
+                JOptionPane.showMessageDialog(null, "Limite Atingido!");
             }
 
         } else //verifica se aquele elemento está na lista
-        {
-            if (checkSelecionado.contains(2)) {
+         if (checkSelecionado.contains(2)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(2));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
-        }
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
@@ -742,17 +740,15 @@ public class Main extends javax.swing.JFrame {
                 System.out.print(checkSelecionado.size() + " " + qtdCheckSelecionado);
             } else {
                 jCheckBox3.setSelected(false);
-                JOptionPane.showMessageDialog(null,"Limite Atingido!");
+                JOptionPane.showMessageDialog(null, "Limite Atingido!");
             }
 
         } else //verifica se aquele elemento está na lista
-        {
-            if (checkSelecionado.contains(3)) {
+         if (checkSelecionado.contains(3)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(3));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
-        }
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
@@ -764,89 +760,81 @@ public class Main extends javax.swing.JFrame {
                 System.out.print(checkSelecionado.size() + " " + qtdCheckSelecionado);
             } else {
                 jCheckBox4.setSelected(false);
-                JOptionPane.showMessageDialog(null,"Limite Atingido!");
+                JOptionPane.showMessageDialog(null, "Limite Atingido!");
             }
 
         } else //verifica se aquele elemento está na lista
-        {
-            if (checkSelecionado.contains(4)) {
+         if (checkSelecionado.contains(4)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(4));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
-        }
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
         // TODO add your handling code here:
-           if (jCheckBox5.isSelected()) {
+        if (jCheckBox5.isSelected()) {
             if (qtdCheckSelecionado > 0) {
                 checkSelecionado.add(5);
                 qtdCheckSelecionado = qtdCheckSelecionado - 1;
                 System.out.print(checkSelecionado.size() + " " + qtdCheckSelecionado);
             } else {
                 jCheckBox5.setSelected(false);
-                JOptionPane.showMessageDialog(null,"Limite Atingido!");
+                JOptionPane.showMessageDialog(null, "Limite Atingido!");
             }
 
         } else //verifica se aquele elemento está na lista
-        {
-            if (checkSelecionado.contains(5)) {
+         if (checkSelecionado.contains(5)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(5));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
-        }
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
         // TODO add your handling code here:
-           if (jCheckBox6.isSelected()) {
+        if (jCheckBox6.isSelected()) {
             if (qtdCheckSelecionado > 0) {
                 checkSelecionado.add(6);
                 qtdCheckSelecionado = qtdCheckSelecionado - 1;
                 System.out.print(checkSelecionado.size() + " " + qtdCheckSelecionado);
             } else {
                 jCheckBox6.setSelected(false);
-                JOptionPane.showMessageDialog(null,"Limite Atingido!");
+                JOptionPane.showMessageDialog(null, "Limite Atingido!");
             }
 
         } else //verifica se aquele elemento está na lista
-        {
-            if (checkSelecionado.contains(6)) {
+         if (checkSelecionado.contains(6)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(6));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
-        }
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
         // TODO add your handling code here:
-           if (jCheckBox7.isSelected()) {
+        if (jCheckBox7.isSelected()) {
             if (qtdCheckSelecionado > 0) {
                 checkSelecionado.add(7);
                 qtdCheckSelecionado = qtdCheckSelecionado - 1;
                 System.out.print(checkSelecionado.size() + " " + qtdCheckSelecionado);
             } else {
-               jCheckBox7.setSelected(false);
-               JOptionPane.showMessageDialog(null,"Limite Atingido!");
-               
+                jCheckBox7.setSelected(false);
+                JOptionPane.showMessageDialog(null, "Limite Atingido!");
+
             }
 
         } else //verifica se aquele elemento está na lista
-        {
-            if (checkSelecionado.contains(7)) {
+         if (checkSelecionado.contains(7)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(7));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
-        }
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jRadioButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton8ActionPerformed
         // TODO add your handling code here:
-          if (jRadioButton8.isSelected()) {
+        if (jRadioButton8.isSelected()) {
             isMalhaAberta = true;
         }
         System.out.print(isMalhaAberta);
@@ -854,7 +842,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jRadioButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton9ActionPerformed
         // TODO add your handling code here:
-         if (jRadioButton9.isSelected()) {
+        if (jRadioButton9.isSelected()) {
             isMalhaAberta = false;
         }
         System.out.print(isMalhaAberta);
@@ -862,7 +850,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jRadioButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton10ActionPerformed
         // TODO add your handling code here:
-        if(jRadioButton10.isSelected()){
+        if (jRadioButton10.isSelected()) {
             sinalAtual = DEGRAU;
         }
         jSpinner5.setVisible(true);
@@ -880,7 +868,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jRadioButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton11ActionPerformed
         // TODO add your handling code here:
-        if(jRadioButton11.isSelected()){
+        if (jRadioButton11.isSelected()) {
             sinalAtual = ONDA_SENOIDAL;
         }
         jLabel1.setVisible(true);
@@ -895,12 +883,12 @@ public class Main extends javax.swing.JFrame {
         jTextField1.setVisible(true);
         jTextField2.setVisible(true);
         jTextField3.setVisible(true);
-        
+
     }//GEN-LAST:event_jRadioButton11ActionPerformed
 
     private void jRadioButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton12ActionPerformed
         // TODO add your handling code here:
-        if(jRadioButton12.isSelected()){
+        if (jRadioButton12.isSelected()) {
             sinalAtual = ONDA_QUADRADA;
         }
         jLabel1.setVisible(true);
@@ -915,12 +903,12 @@ public class Main extends javax.swing.JFrame {
         jTextField1.setVisible(true);
         jTextField2.setVisible(true);
         jTextField3.setVisible(true);
-        
+
     }//GEN-LAST:event_jRadioButton12ActionPerformed
 
     private void jRadioButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton13ActionPerformed
         // TODO add your handling code here:
-        if(jRadioButton13.isSelected()){
+        if (jRadioButton13.isSelected()) {
             sinalAtual = DENTE_DE_SERRA;
         }
         jLabel1.setVisible(true);
@@ -935,12 +923,12 @@ public class Main extends javax.swing.JFrame {
         jTextField1.setVisible(true);
         jTextField2.setVisible(true);
         jTextField3.setVisible(true);
-        
+
     }//GEN-LAST:event_jRadioButton13ActionPerformed
 
     private void jRadioButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton14ActionPerformed
         // TODO add your handling code here:
-        if(jRadioButton14.isSelected()){
+        if (jRadioButton14.isSelected()) {
             sinalAtual = SINAL_ALEATORIO;
         }
         jLabel1.setVisible(true);
@@ -959,90 +947,90 @@ public class Main extends javax.swing.JFrame {
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
         // TODO add your handling code here:
-        if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
+        if (isMalhaAberta && sinalAtual == SINAL_ALEATORIO) {
             //valor minimo
-            if(Integer.parseInt(jSpinner1.getValue().toString()) > 4 | Integer.parseInt(jSpinner1.getValue().toString()) < -4){
-               //pegar um numero ramdomico 
-               if(Integer.parseInt(jSpinner1.getValue().toString()) >4){
-               jSpinner1.setValue(4);
-               }else{
-                   jSpinner1.setValue(-4);
-               }
-               JOptionPane.showMessageDialog(null, "limite ultrapassado");
+            if (Integer.parseInt(jSpinner1.getValue().toString()) > 4 | Integer.parseInt(jSpinner1.getValue().toString()) < -4) {
+                //pegar um numero ramdomico 
+                if (Integer.parseInt(jSpinner1.getValue().toString()) > 4) {
+                    jSpinner1.setValue(4);
+                } else {
+                    jSpinner1.setValue(-4);
+                }
+                JOptionPane.showMessageDialog(null, "limite ultrapassado");
             }
         }
     }//GEN-LAST:event_jSpinner1StateChanged
 
     private void jSpinner2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner2StateChanged
         // TODO add your handling code here:
-        if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
+        if (isMalhaAberta && sinalAtual == SINAL_ALEATORIO) {
             //valor minimo
-            if(Integer.parseInt(jSpinner2.getValue().toString()) > 4 | Integer.parseInt(jSpinner2.getValue().toString()) < -4){
-               //pegar um numero ramdomico 
-               if(Integer.parseInt(jSpinner2.getValue().toString()) >4){
+            if (Integer.parseInt(jSpinner2.getValue().toString()) > 4 | Integer.parseInt(jSpinner2.getValue().toString()) < -4) {
+                //pegar um numero ramdomico 
+                if (Integer.parseInt(jSpinner2.getValue().toString()) > 4) {
                     jSpinner2.setValue(4);
-               }else{
-                   jSpinner2.setValue(-4);
-               }
-               JOptionPane.showMessageDialog(null, "limite ultrapassado");
+                } else {
+                    jSpinner2.setValue(-4);
+                }
+                JOptionPane.showMessageDialog(null, "limite ultrapassado");
             }
         }
     }//GEN-LAST:event_jSpinner2StateChanged
 
     private void jSpinner5StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner5StateChanged
         // TODO add your handling code here:
-        if(isMalhaAberta && sinalAtual != SINAL_ALEATORIO){
+        if (isMalhaAberta && sinalAtual != SINAL_ALEATORIO) {
             //valor minimo
-            if(Integer.parseInt(jSpinner5.getValue().toString()) > 4 | Integer.parseInt(jSpinner5.getValue().toString()) < -4){
-               //pegar um numero ramdomico 
-               if(Integer.parseInt(jSpinner5.getValue().toString()) >4){
+            if (Integer.parseInt(jSpinner5.getValue().toString()) > 4 | Integer.parseInt(jSpinner5.getValue().toString()) < -4) {
+                //pegar um numero ramdomico 
+                if (Integer.parseInt(jSpinner5.getValue().toString()) > 4) {
                     jSpinner5.setValue(4);
-               }else{
-                   jSpinner5.setValue(-4);
-               }
-               JOptionPane.showMessageDialog(null, "limite ultrapassado");
+                } else {
+                    jSpinner5.setValue(-4);
+                }
+                JOptionPane.showMessageDialog(null, "limite ultrapassado");
             }
-        }else if(!isMalhaAberta && sinalAtual != SINAL_ALEATORIO){
-            if(Integer.parseInt(jSpinner5.getValue().toString()) > 30 | Integer.parseInt(jSpinner5.getValue().toString()) < 0){
-               //pegar um numero ramdomico 
-               if(Integer.parseInt(jSpinner5.getValue().toString()) >30){
+        } else if (!isMalhaAberta && sinalAtual != SINAL_ALEATORIO) {
+            if (Integer.parseInt(jSpinner5.getValue().toString()) > 30 | Integer.parseInt(jSpinner5.getValue().toString()) < 0) {
+                //pegar um numero ramdomico 
+                if (Integer.parseInt(jSpinner5.getValue().toString()) > 30) {
                     jSpinner5.setValue(30);
-               }else{
-                   jSpinner5.setValue(0);
-               }
-               JOptionPane.showMessageDialog(null, "limite ultrapassado");
+                } else {
+                    jSpinner5.setValue(0);
+                }
+                JOptionPane.showMessageDialog(null, "limite ultrapassado");
             }
         }
     }//GEN-LAST:event_jSpinner5StateChanged
 
     private void jSpinner4StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner4StateChanged
         // TODO add your handling code here:
-          if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
+        if (isMalhaAberta && sinalAtual == SINAL_ALEATORIO) {
             //valor minimo
-            if(Integer.parseInt(jSpinner4.getValue().toString()) > 60 | Integer.parseInt(jSpinner4.getValue().toString()) < 0){
-               //pegar um numero ramdomico 
-               if(Integer.parseInt(jSpinner4.getValue().toString()) > 60){
-               jSpinner4.setValue(60);
-               }else{
-                   jSpinner4.setValue(0);
-               }
-               JOptionPane.showMessageDialog(null, "limite ultrapassado");
+            if (Integer.parseInt(jSpinner4.getValue().toString()) > 60 | Integer.parseInt(jSpinner4.getValue().toString()) < 0) {
+                //pegar um numero ramdomico 
+                if (Integer.parseInt(jSpinner4.getValue().toString()) > 60) {
+                    jSpinner4.setValue(60);
+                } else {
+                    jSpinner4.setValue(0);
+                }
+                JOptionPane.showMessageDialog(null, "limite ultrapassado");
             }
         }
     }//GEN-LAST:event_jSpinner4StateChanged
 
     private void jSpinner3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner3StateChanged
         // TODO add your handling code here:
-          if(isMalhaAberta && sinalAtual == SINAL_ALEATORIO){
+        if (isMalhaAberta && sinalAtual == SINAL_ALEATORIO) {
             //valor minimo
-            if(Integer.parseInt(jSpinner3.getValue().toString()) > 60 | Integer.parseInt(jSpinner3.getValue().toString()) < 0){
-               //pegar um numero ramdomico 
-               if(Integer.parseInt(jSpinner3.getValue().toString()) > 60){
-               jSpinner3.setValue(60);
-               }else{
-                   jSpinner3.setValue(0);
-               }
-               JOptionPane.showMessageDialog(null, "limite ultrapassado");
+            if (Integer.parseInt(jSpinner3.getValue().toString()) > 60 | Integer.parseInt(jSpinner3.getValue().toString()) < 0) {
+                //pegar um numero ramdomico 
+                if (Integer.parseInt(jSpinner3.getValue().toString()) > 60) {
+                    jSpinner3.setValue(60);
+                } else {
+                    jSpinner3.setValue(0);
+                }
+                JOptionPane.showMessageDialog(null, "limite ultrapassado");
             }
         }
     }//GEN-LAST:event_jSpinner3StateChanged
@@ -1050,35 +1038,35 @@ public class Main extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
         String erro = "";
-        if(jToggleButton1.isSelected()){
+        if (jToggleButton1.isSelected()) {
             //quando o usuário da start
             jToggleButton1.setText("Stop");
             //validando campos vázios ou não selecionados
-            if(sinalAtual < 0){
+            if (sinalAtual < 0) {
                 erro = erro + "Tipo Sinal";
-            }else if(sinalAtual == ONDA_QUADRADA || sinalAtual == ONDA_SENOIDAL || sinalAtual == DENTE_DE_SERRA){
-                if(jTextField1.getText().isEmpty()){
-                   erro = ", Periodo";
+            } else if (sinalAtual == ONDA_QUADRADA || sinalAtual == ONDA_SENOIDAL || sinalAtual == DENTE_DE_SERRA) {
+                if (jTextField1.getText().isEmpty()) {
+                    erro = ", Periodo";
                 }
-                if(jTextField2.getText().isEmpty()){
+                if (jTextField2.getText().isEmpty()) {
                     erro = erro + ", Frequencia";
                 }
             }
-            if(checkSelecionado.size() <=0){
+            if (checkSelecionado.size() <= 0) {
                 erro = erro + ", Entrada";
             }
-            if(radioSelecionado < 0){
+            if (radioSelecionado < 0) {
                 erro = erro + ", Saida";
             }
-            if(erro.length() >0){
+            if (erro.length() > 0) {
                 JOptionPane.showMessageDialog(null, erro + ":\nCampo vázio ou não selecionado");
                 jToggleButton1.setSelected(false);
                 jToggleButton1.setText("Start");
-            }else{
+            } else {
                 desabilitaEntradaSaida();
                 criandoGrafico();
             }
-        }else{
+        } else {
             jToggleButton1.setText("Start");
             habilitaEntradaSaida();
         }
@@ -1088,57 +1076,57 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         //Quando o usuario digitar periodo preencher automaticamente a frequencia e vice-versa
         double frequencia = 0;
-        if(jTextField2.getText().isEmpty() && jTextField1.getText().isEmpty()){
-             JOptionPane.showMessageDialog(null, "Frequencia/Periodo: Campo vazio");
-        }else if(jTextField1.getText().isEmpty()){
+        if (jTextField2.getText().isEmpty() && jTextField1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Frequencia/Periodo: Campo vazio");
+        } else if (jTextField1.getText().isEmpty()) {
             //passa o numero digitado para inteiro, caso não seja um número dispara uma mensagem
-            try{
+            try {
                 frequencia = Integer.parseInt(jTextField2.getText());
-                double periodo = 1/frequencia;
+                double periodo = 1 / frequencia;
                 jTextField1.setText("" + periodo);
-            }catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Frequencia: Campo inválido");
                 jTextField2.setText("");
             }
-            
+
         }
     }//GEN-LAST:event_jTextField2FocusLost
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
         // TODO add your handling code here:
-         int periodo = 0;
-        if(jTextField1.getText().isEmpty() && jTextField2.getText().isEmpty()){
-             JOptionPane.showMessageDialog(null, "Frequencia/Periodo: Campo vazio");
-        }else if(jTextField2.getText().isEmpty()){
+        int periodo = 0;
+        if (jTextField1.getText().isEmpty() && jTextField2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Frequencia/Periodo: Campo vazio");
+        } else if (jTextField2.getText().isEmpty()) {
             //passa o numero digitado para inteiro, caso não seja um número dispara uma mensagem
-            try{
+            try {
                 periodo = Integer.parseInt(jTextField1.getText());
-                double frequencia = 1/periodo;
+                double frequencia = 1 / periodo;
                 jTextField2.setText("" + frequencia);
-            }catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Periodo: Campo inválido");
                 jTextField1.setText("");
             }
-            
+
         }
     }//GEN-LAST:event_jTextField1FocusLost
 
     private void jTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusLost
         // TODO add your handling code here:
         //verifica se está vazio
-        if(jTextField3.getText().isEmpty()){
+        if (jTextField3.getText().isEmpty()) {
             jTextField3.setText("0");
-        }else{
+        } else {
             //caso não , verifica se é um numero
-            try{
+            try {
                 offSet = Integer.parseInt(jTextField3.getText());
-            }catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Offset: Campo inválido");
                 offSet = 0;
             }
         }
     }//GEN-LAST:event_jTextField3FocusLost
-    public void desabilitaEntradaSaida(){
+    public void desabilitaEntradaSaida() {
         jRadioButton1.setEnabled(false);
         jRadioButton2.setEnabled(false);
         jRadioButton3.setEnabled(false);
@@ -1169,7 +1157,8 @@ public class Main extends javax.swing.JFrame {
         jTextField2.setEnabled(false);
         jTextField3.setEnabled(false);
     }
-     public void habilitaEntradaSaida(){
+
+    public void habilitaEntradaSaida() {
         jRadioButton1.setEnabled(true);
         jRadioButton2.setEnabled(true);
         jRadioButton3.setEnabled(true);
@@ -1200,32 +1189,85 @@ public class Main extends javax.swing.JFrame {
         jTextField2.setEnabled(true);
         jTextField3.setEnabled(true);
     }
-     //Classe responsável pela thread que irá coletar os dados
-     public class ThreadDados extends Thread{
-         
-         public ThreadDados(){
-             
-         }
-         public void run(){
-             //pega as entradas,saida, tipo de onda e o restante dos parametros
-         }
+    //Classe responsável pela thread que irá coletar os dados
+
+    public class ThreadDados extends Thread {
+
+        public ThreadDados() {
+
+        }
+
+        public void run() {
+            //pega as entradas,saida, tipo de onda e o restante dos parametros
+        }
     }
-    private void criandoGrafico(){
-        XYSeries series = new XYSeries("Gráfico");
+
+    private void criandoGrafico() {
+
         //dados do gráfico
         //esses dados serão oriundos das leitura das threads
-        series.add(1,2);
-        series.add(2,3);
-        series.add(3,1);
+        double a = Math.toRadians(x);
+        new Thread() {
+            public void run() {
+                while (jToggleButton1.isSelected() && sinalAtual == DEGRAU) {
+                    series.add(x++, 10);
+                    //para testes
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                while (jToggleButton1.isSelected() && sinalAtual == ONDA_SENOIDAL) {
+                    double a = Math.toRadians(x);
+                    series.add(x++, Math.sin(a));
+                    //para testes
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                while (jToggleButton1.isSelected() && sinalAtual == ONDA_QUADRADA) {
+                    series.add(x++, Math.signum(Math.sin(100 * 2 * Math.PI * x / 44100)));
+                    //para testes
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                while (jToggleButton1.isSelected() && sinalAtual == DENTE_DE_SERRA) {
+                    series.add(x++, 0.5 * Math.asin(Math.sin(450 * 2 * Math.PI * x / 44100)));
+                    //para testes
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                while (jToggleButton1.isSelected() && sinalAtual == SINAL_ALEATORIO) {
+                    //não sei.
+                    //series.add(x++, 10);
+                    //para testes
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }.start();
         XYSeriesCollection dados = new XYSeriesCollection(series);
         //criando um gráfico linear
         JFreeChart chart = ChartFactory.createXYLineChart("", "x", "y", dados);
         ChartPanel chartPanel = new ChartPanel(chart);
         //adicionando a frame
-        jPanel7.add(chartPanel,BorderLayout.CENTER);
-        chartPanel.setSize(445,400);
+        jPanel7.add(chartPanel, BorderLayout.CENTER);
+        chartPanel.setSize(445, 400);
         chartPanel.setVisible(true);
     }
+
     /**
      * @param args the command line arguments
      */
