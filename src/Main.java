@@ -28,10 +28,12 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class Main extends javax.swing.JFrame {
 
+    private double pv;
+
     XYSeries series = new XYSeries("Gráfico");
 
-    private int x = 0;
-    
+    private double x = 0;
+
     private int amplitude;
     private int amplitudeMax;
     private int amplitudeMin;
@@ -72,7 +74,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "A conexão falhou");
         }
         initComponents();
-        criandoGrafico();
+        criandoGrafico(0,0);
     }
 
     /**
@@ -710,11 +712,13 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else //verifica se aquele elemento está na lista
-         if (checkSelecionado.contains(1)) {
+        {
+            if (checkSelecionado.contains(1)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(1));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
+        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -730,11 +734,13 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else //verifica se aquele elemento está na lista
-         if (checkSelecionado.contains(2)) {
+        {
+            if (checkSelecionado.contains(2)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(2));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
+        }
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
@@ -750,11 +756,13 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else //verifica se aquele elemento está na lista
-         if (checkSelecionado.contains(3)) {
+        {
+            if (checkSelecionado.contains(3)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(3));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
+        }
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
@@ -770,11 +778,13 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else //verifica se aquele elemento está na lista
-         if (checkSelecionado.contains(4)) {
+        {
+            if (checkSelecionado.contains(4)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(4));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
+        }
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
@@ -790,11 +800,13 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else //verifica se aquele elemento está na lista
-         if (checkSelecionado.contains(5)) {
+        {
+            if (checkSelecionado.contains(5)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(5));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
+        }
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
@@ -810,11 +822,13 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else //verifica se aquele elemento está na lista
-         if (checkSelecionado.contains(6)) {
+        {
+            if (checkSelecionado.contains(6)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(6));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
+        }
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
     private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
@@ -831,11 +845,13 @@ public class Main extends javax.swing.JFrame {
             }
 
         } else //verifica se aquele elemento está na lista
-         if (checkSelecionado.contains(7)) {
+        {
+            if (checkSelecionado.contains(7)) {
                 checkSelecionado.remove(checkSelecionado.indexOf(7));
                 qtdCheckSelecionado += 1;
                 System.out.print(checkSelecionado.size() + "" + qtdCheckSelecionado);
             }
+        }
     }//GEN-LAST:event_jCheckBox7ActionPerformed
 
     private void jRadioButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton8ActionPerformed
@@ -963,7 +979,7 @@ public class Main extends javax.swing.JFrame {
                     jSpinner1.setValue(-4);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
-            }else{
+            } else {
                 amplitudeMin = Integer.parseInt(jSpinner1.getValue().toString());
             }
         }
@@ -981,7 +997,7 @@ public class Main extends javax.swing.JFrame {
                     jSpinner2.setValue(-4);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
-            }else{
+            } else {
                 amplitudeMax = Integer.parseInt(jSpinner2.getValue().toString());
             }
         }
@@ -999,7 +1015,7 @@ public class Main extends javax.swing.JFrame {
                     jSpinner5.setValue(-4);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
-            }else{
+            } else {
                 amplitude = Integer.parseInt(jSpinner5.getValue().toString());
             }
         } else if (!isMalhaAberta && sinalAtual != SINAL_ALEATORIO) {
@@ -1011,7 +1027,7 @@ public class Main extends javax.swing.JFrame {
                     jSpinner5.setValue(0);
                 }
                 JOptionPane.showMessageDialog(null, "limite ultrapassado");
-            }else{
+            } else {
                 amplitude = Integer.parseInt(jSpinner5.getValue().toString());
             }
         }
@@ -1056,7 +1072,7 @@ public class Main extends javax.swing.JFrame {
             //quando o usuário da start
             jToggleButton1.setText("Stop");
             //valida no caso sinal aleatorio 
-            if(sinalAtual == SINAL_ALEATORIO && amplitudeMax < amplitudeMin){
+            if (sinalAtual == SINAL_ALEATORIO && amplitudeMax < amplitudeMin) {
                 JOptionPane.showMessageDialog(null, "Amplitude Max < Amplitude Min");
             }
             //validando campos vázios ou não selecionados
@@ -1065,19 +1081,19 @@ public class Main extends javax.swing.JFrame {
             } else if (sinalAtual == ONDA_QUADRADA || sinalAtual == ONDA_SENOIDAL || sinalAtual == DENTE_DE_SERRA) {
                 if (jTextField1.getText().isEmpty()) {
                     erro = ", Periodo";
-                }else{
-                    try{
+                } else {
+                    try {
                         periodo = Double.parseDouble(jTextField1.getText());
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Período: formato inválido");
                     }
                 }
                 if (jTextField2.getText().isEmpty()) {
                     erro = erro + ", Frequencia";
-                }else{
-                    try{
+                } else {
+                    try {
                         frequencia = Double.parseDouble(jTextField2.getText());
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Frequência: formato inválido");
                     }
                 }
@@ -1094,7 +1110,107 @@ public class Main extends javax.swing.JFrame {
                 jToggleButton1.setText("Start");
             } else {
                 desabilitaEntradaSaida();
-                criandoGrafico();
+
+                new Thread() {
+                    public void run() {
+                        while (jToggleButton1.isSelected()) {
+                            if (sinalAtual == DEGRAU) {
+                                pv = amplitude;
+                            }
+                            if (sinalAtual == ONDA_SENOIDAL) {
+                                pv = amplitude * Math.sin(frequencia * x);
+                            }
+                            if (sinalAtual == ONDA_QUADRADA) {
+                                pv = amplitude * ondaQuadrada(frequencia * x);
+                            }
+                            if (sinalAtual == DENTE_DE_SERRA) {
+                                pv = amplitude * denteDeSerra(frequencia * x);
+                            }
+                            if (sinalAtual == SINAL_ALEATORIO) {
+
+                            }
+                            long tempoInicial = System.currentTimeMillis();
+                            if (isMalhaAberta) {
+                                try {
+                                    //leitura
+                                    double tensaoTanque1 = qClient.read(0);
+                                    double tensaoTanque2 = qClient.read(1);
+                                    //calculos
+                                    double nivelTanque1 = tensaoTanque1 * 6.25;
+                                    double nivelTanque2 = tensaoTanque2 * 6.25;
+                                    //travas
+                                    if (tensaoTanque1 > 4) {
+                                        pv = 4;
+                                    }
+                                    if (tensaoTanque1 < -4) {
+                                        pv = -4;
+                                    }
+                                    if (nivelTanque1 < 3 && tensaoTanque1 < 0) {
+                                        pv = 0;
+                                    }
+                                    if (nivelTanque1 > 28 && tensaoTanque1 > 3.25) {
+                                        pv = 3.25;
+                                    }
+                                    if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
+                                        pv = 0;
+                                    }
+                                    //escrita
+                                    qClient.write(0, pv);
+                                } catch (QuanserClientException ex) {
+                                    JOptionPane.showMessageDialog(null, "Erro de I/O");
+                                }
+                            }
+                            if (!isMalhaAberta) {
+                                try {
+                                    //leitura
+                                    double tensaoTanque1 = qClient.read(0);
+                                    double tensaoTanque2 = qClient.read(1);
+                                    //calculos
+                                    double nivelTanque1 = tensaoTanque1 * 6.25;
+                                    double nivelTanque2 = tensaoTanque2 * 6.25;
+                                    //travas
+                                    if (tensaoTanque1 > 4) {
+                                        pv = 4;
+                                    }
+                                    if (tensaoTanque1 < -4) {
+                                        pv = -4;
+                                    }
+                                    if (nivelTanque1 < 3 && tensaoTanque1 < 0) {
+                                        pv = 0;
+                                    }
+                                    if (nivelTanque1 > 28 && tensaoTanque1 > 3.25) {
+                                        pv = 3.25;
+                                    }
+                                    if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
+                                        pv = 0;
+                                    }
+                                    //erro = sinal desejado - sinal lido
+                                    double erro = pv - tensaoTanque1;
+                                    //escrita
+                                    qClient.write(0, erro);
+                                } catch (QuanserClientException ex) {
+                                    JOptionPane.showMessageDialog(null, "Erro de I/O");
+                                }
+                            }
+                            long tempoFinal = System.currentTimeMillis();
+                            long resto = tempoFinal - tempoInicial;
+                            if (resto < 100) {
+                                try {
+                                    Thread.sleep(resto);
+                                    Thread.currentThread().interrupt();
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                Thread.currentThread().interrupt();
+                            }
+                            x = x + 0.1;
+                        }
+                    }
+                }.
+                        start();
+                criandoGrafico(0,0);
+
             }
         } else {
             jToggleButton1.setText("Start");
@@ -1218,82 +1334,122 @@ public class Main extends javax.swing.JFrame {
         jTextField1.setEnabled(true);
         jTextField2.setEnabled(true);
         jTextField3.setEnabled(true);
+
     }
     //Classe responsável pela thread que irá coletar os dados
-
+/*Não precisou
     public class ThreadDados extends Thread {
 
-        public ThreadDados() {
+        double pv;
 
+        public ThreadDados(double pv) {
+            this.pv = pv;
         }
 
         @Override
         public void run() {
-            try {
-                //leitura
-                double param1 = qClient.read(checkSelecionado.get(0));
-                double param2 = qClient.read(checkSelecionado.get(1));
-                //calculos
-                //travas
-                //escrita
-            } catch (QuanserClientException ex) {
-                JOptionPane.showMessageDialog(null, "Erro na leitura");
+            long tempoInicial = System.currentTimeMillis();
+            if (isMalhaAberta) {
+                try {
+                    //leitura
+                    double tensaoTanque1 = qClient.read(0);
+                    double tensaoTanque2 = qClient.read(1);
+                    //calculos
+                    double nivelTanque1 = tensaoTanque1 * 6.25;
+                    double nivelTanque2 = tensaoTanque2 * 6.25;
+                    //travas
+                    if (tensaoTanque1 > 4) {
+                        pv = 4;
+                    }
+                    if (tensaoTanque1 < -4) {
+                        pv = -4;
+                    }
+                    if (nivelTanque1 < 3 && tensaoTanque1 < 0) {
+                        pv = 0;
+                    }
+                    if (nivelTanque1 > 28 && tensaoTanque1 > 3.25) {
+                        pv = 3.25;
+                    }
+                    if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
+                        pv = 0;
+                    }
+                    //escrita
+                    qClient.write(0, pv);
+                } catch (QuanserClientException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro de I/O");
+                }
             }
-            
+            if (!isMalhaAberta) {
+                try {
+                    //leitura
+                    double tensaoTanque1 = qClient.read(0);
+                    double tensaoTanque2 = qClient.read(1);
+                    //calculos
+                    double nivelTanque1 = tensaoTanque1 * 6.25;
+                    double nivelTanque2 = tensaoTanque2 * 6.25;
+                    //travas
+                    if (tensaoTanque1 > 4) {
+                        pv = 4;
+                    }
+                    if (tensaoTanque1 < -4) {
+                        pv = -4;
+                    }
+                    if (nivelTanque1 < 3 && tensaoTanque1 < 0) {
+                        pv = 0;
+                    }
+                    if (nivelTanque1 > 28 && tensaoTanque1 > 3.25) {
+                        pv = 3.25;
+                    }
+                    if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
+                        pv = 0;
+                    }
+                    //erro = sinal desejado - sinal lido
+                    double erro = pv - tensaoTanque1;
+                    //escrita
+                    qClient.write(0, erro);
+                } catch (QuanserClientException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro de I/O");
+                }
+            }
+            long tempoFinal = System.currentTimeMillis();
+            long resto = tempoFinal - tempoInicial;
+            if (resto < 100) {
+                try {
+                    Thread.sleep(resto);
+                    Thread.currentThread().interrupt();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                Thread.currentThread().interrupt();
+            }
         }
     }
+    */
 
-    private void criandoGrafico() {
+    private void criandoGrafico(double xLido, double yLido) {
         //dados do gráfico
         //esses dados serão oriundos das leitura das threads
+        //gráficos ideais
         new Thread() {
+            @Override
             public void run() {
                 while (jToggleButton1.isSelected() && sinalAtual == DEGRAU) {
-                    series.add(x++, amplitude);
-                    //para testes
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    series.add(x, amplitude);
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == ONDA_SENOIDAL) {
                     double a = Math.toRadians(x);
-                    series.add(x++, amplitude*Math.sin(a*frequencia));
-                    //para testes
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    series.add(x, amplitude * Math.sin(a * frequencia));
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == ONDA_QUADRADA) {
-                    series.add(x++, amplitude * Math.signum(Math.sin(frequencia * 2 * Math.PI * x / 60)));
-                    //para testes
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    series.add(x, amplitude * ondaQuadrada(x * frequencia));
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == DENTE_DE_SERRA) {
-                    series.add(x++, Math.asin(Math.sin(1 * 2 * Math.PI * x/ 60)));
-                    //para testes
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    series.add(x, denteDeSerra(x * frequencia));
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == SINAL_ALEATORIO) {
                     //não sei.
                     //series.add(x++, 10);
-                    //para testes
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                 }
             }
         }.start();
@@ -1305,6 +1461,14 @@ public class Main extends javax.swing.JFrame {
         jPanel7.add(chartPanel, BorderLayout.CENTER);
         chartPanel.setSize(445, 400);
         chartPanel.setVisible(true);
+    }
+
+    private double ondaQuadrada(double x) {
+        return Math.signum(Math.sin(2 * Math.PI * x / 60));
+    }
+
+    private double denteDeSerra(double x) {
+        return Math.asin(Math.sin(1 * 2 * Math.PI * x / 60));
     }
 
     /**
@@ -1321,16 +1485,24 @@ public class Main extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
