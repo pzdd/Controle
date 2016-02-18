@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.SwingConstants;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -27,6 +29,13 @@ import org.jfree.data.xy.XYSeriesCollection;
  * jfreechart-1.0.19-swt
  */
 public class Main extends javax.swing.JFrame {
+    
+    
+    private double nivelTanque1 = 0;
+    private double nivelTanque2 = 0;
+    
+    private double tensaoTanque1 = 0;
+    private double tensaoTanque2 = 0;
 
     private double pv;
 
@@ -74,6 +83,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "A conexão falhou");
         }
         initComponents();
+        //jProgressBar1.setOrientation(JProgressBar.HORIZONTAL);
         criandoGrafico(0,0);
     }
 
@@ -562,6 +572,12 @@ public class Main extends javax.swing.JFrame {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Nivel 1                                Nivel 2"));
 
+        jProgressBar1.setMaximum(30);
+        jProgressBar1.setValue(15);
+
+        jProgressBar2.setMaximum(30);
+        jProgressBar2.setValue(15);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -582,6 +598,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        jProgressBar1.setOrientation(JProgressBar.VERTICAL);
+        jProgressBar2.setOrientation(JProgressBar.VERTICAL);
 
         jToggleButton1.setText("Start");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -1115,16 +1134,32 @@ public class Main extends javax.swing.JFrame {
                     public void run() {
                         while (jToggleButton1.isSelected()) {
                             if (sinalAtual == DEGRAU) {
-                                pv = amplitude;
+                                if(isMalhaAberta){
+                                    pv = amplitude;
+                                }else{
+                                    pv = 3;
+                                }
                             }
                             if (sinalAtual == ONDA_SENOIDAL) {
-                                pv = amplitude * Math.sin(frequencia * x);
+                                if(isMalhaAberta){
+                                    pv = amplitude * Math.sin(frequencia * Math.toRadians(x)) + offSet;
+                                }else{
+                                    pv =  Math.sin(frequencia * Math.toRadians(x)) + offSet;
+                                }
                             }
                             if (sinalAtual == ONDA_QUADRADA) {
-                                pv = amplitude * ondaQuadrada(frequencia * x);
+                                if(isMalhaAberta){
+                                    pv = amplitude * ondaQuadrada(frequencia * Math.toRadians(x)) + offSet;
+                                }else{
+                                    pv = (amplitude/6.25) * ondaQuadrada(frequencia * Math.toRadians(x)) + offSet;
+                                }
                             }
                             if (sinalAtual == DENTE_DE_SERRA) {
-                                pv = amplitude * denteDeSerra(frequencia * x);
+                                if(isMalhaAberta){
+                                    pv = amplitude * denteDeSerra(frequencia * Math.toRadians(x));
+                                }else{
+                                    pv = (amplitude/6.25) * denteDeSerra(frequencia * Math.toRadians(x));
+                                }
                             }
                             if (sinalAtual == SINAL_ALEATORIO) {
 
@@ -1133,11 +1168,11 @@ public class Main extends javax.swing.JFrame {
                             if (isMalhaAberta) {
                                 try {
                                     //leitura
-                                    double tensaoTanque1 = qClient.read(0);
-                                    double tensaoTanque2 = qClient.read(1);
+                                    tensaoTanque1 = qClient.read(0);
+                                    tensaoTanque2 = qClient.read(1);
                                     //calculos
-                                    double nivelTanque1 = tensaoTanque1 * 6.25;
-                                    double nivelTanque2 = tensaoTanque2 * 6.25;
+                                    nivelTanque1 = tensaoTanque1 * 6.25;
+                                    nivelTanque2 = tensaoTanque2 * 6.25;
                                     //travas
                                     if (tensaoTanque1 > 4) {
                                         pv = 4;
@@ -1163,11 +1198,11 @@ public class Main extends javax.swing.JFrame {
                             if (!isMalhaAberta) {
                                 try {
                                     //leitura
-                                    double tensaoTanque1 = qClient.read(0);
-                                    double tensaoTanque2 = qClient.read(1);
+                                    tensaoTanque1 = qClient.read(0);
+                                    tensaoTanque2 = qClient.read(1);
                                     //calculos
-                                    double nivelTanque1 = tensaoTanque1 * 6.25;
-                                    double nivelTanque2 = tensaoTanque2 * 6.25;
+                                    nivelTanque1 = tensaoTanque1 * 6.25;
+                                    nivelTanque2 = tensaoTanque2 * 6.25;
                                     //travas
                                     if (tensaoTanque1 > 4) {
                                         pv = 4;
@@ -1184,6 +1219,12 @@ public class Main extends javax.swing.JFrame {
                                     if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
                                         pv = 0;
                                     }
+                                    if(nivelTanque1 > amplitude){
+                                        pv = 3;
+                                    }
+                                    if(nivelTanque1 < amplitude){
+                                        pv = 0;
+                                    }
                                     //erro = sinal desejado - sinal lido
                                     double erro = pv - tensaoTanque1;
                                     //escrita
@@ -1193,6 +1234,9 @@ public class Main extends javax.swing.JFrame {
                                 }
                             }
                             long tempoFinal = System.currentTimeMillis();
+                            
+                            x = x + 0.1;
+             
                             long resto = tempoFinal - tempoInicial;
                             if (resto < 100) {
                                 try {
@@ -1204,12 +1248,18 @@ public class Main extends javax.swing.JFrame {
                             } else {
                                 Thread.currentThread().interrupt();
                             }
-                            x = x + 0.1;
+                           
+                            if(!jToggleButton1.isSelected()){
+                                Thread.currentThread().interrupt();
+                            }
                         }
                     }
                 }.
                         start();
                 criandoGrafico(0,0);
+                //atualizando os niveis dos tanques
+                jProgressBar1.setValue(Integer.parseInt(String.valueOf(nivelTanque1)));
+                jProgressBar2.setValue(Integer.parseInt(String.valueOf(nivelTanque2)));
 
             }
         } else {
@@ -1435,14 +1485,26 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void run() {
                 while (jToggleButton1.isSelected() && sinalAtual == DEGRAU) {
-                    series.add(x, amplitude);
+                    if(isMalhaAberta){
+                        series.add(x, amplitude);
+                    }else{
+                        series.add(x, amplitude/6.25);
+                    }
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == ONDA_SENOIDAL) {
                     double a = Math.toRadians(x);
-                    series.add(x, amplitude * Math.sin(a * frequencia));
+                    if(isMalhaAberta){
+                        series.add(x, amplitude * Math.sin(a * frequencia));
+                    }else{
+                        series.add(x, (amplitude/6.25) * Math.sin(a * frequencia));
+                    }
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == ONDA_QUADRADA) {
-                    series.add(x, amplitude * ondaQuadrada(x * frequencia));
+                    if(isMalhaAberta){
+                        series.add(x, amplitude * ondaQuadrada(Math.toRadians(x) * frequencia));
+                    }else{
+                        series.add(x, (amplitude/6.25) * ondaQuadrada(Math.toRadians(x) * frequencia));
+                    }
                 }
                 while (jToggleButton1.isSelected() && sinalAtual == DENTE_DE_SERRA) {
                     series.add(x, denteDeSerra(x * frequencia));

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="buttonGroupRadioButton">
     </Component>
@@ -695,8 +695,22 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JProgressBar" name="jProgressBar1">
+          <Properties>
+            <Property name="maximum" type="int" value="30"/>
+            <Property name="value" type="int" value="15"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jProgressBar1.setOrientation(JProgressBar.VERTICAL);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JProgressBar" name="jProgressBar2">
+          <Properties>
+            <Property name="maximum" type="int" value="30"/>
+            <Property name="value" type="int" value="15"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jProgressBar2.setOrientation(JProgressBar.VERTICAL);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
