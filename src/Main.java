@@ -1137,7 +1137,7 @@ public class Main extends javax.swing.JFrame {
                                 if(isMalhaAberta){
                                     pv = amplitude;
                                 }else{
-                                    pv = 3;
+                                    pv = 4;
                                 }
                             }
                             if (sinalAtual == ONDA_SENOIDAL) {
@@ -1151,14 +1151,14 @@ public class Main extends javax.swing.JFrame {
                                 if(isMalhaAberta){
                                     pv = amplitude * ondaQuadrada(frequencia * Math.toRadians(x)) + offSet;
                                 }else{
-                                    pv = (amplitude/6.25) * ondaQuadrada(frequencia * Math.toRadians(x)) + offSet;
+                                    pv =  ondaQuadrada(frequencia * Math.toRadians(x)) + offSet;
                                 }
                             }
                             if (sinalAtual == DENTE_DE_SERRA) {
                                 if(isMalhaAberta){
                                     pv = amplitude * denteDeSerra(frequencia * Math.toRadians(x));
                                 }else{
-                                    pv = (amplitude/6.25) * denteDeSerra(frequencia * Math.toRadians(x));
+                                    pv = denteDeSerra(frequencia * Math.toRadians(x));
                                 }
                             }
                             if (sinalAtual == SINAL_ALEATORIO) {
@@ -1203,6 +1203,10 @@ public class Main extends javax.swing.JFrame {
                                     //calculos
                                     nivelTanque1 = tensaoTanque1 * 6.25;
                                     nivelTanque2 = tensaoTanque2 * 6.25;
+                                    
+                                    //erro = sp - pv;
+                                    double erro = amplitude - nivelTanque1;
+                                    pv = erro/6.25;
                                     //travas
                                     if (tensaoTanque1 > 4) {
                                         pv = 4;
@@ -1219,16 +1223,8 @@ public class Main extends javax.swing.JFrame {
                                     if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
                                         pv = 0;
                                     }
-                                    if(nivelTanque1 > amplitude){
-                                        pv = 3;
-                                    }
-                                    if(nivelTanque1 < amplitude){
-                                        pv = 0;
-                                    }
-                                    //erro = sinal desejado - sinal lido
-                                    double erro = pv - tensaoTanque1;
                                     //escrita
-                                    qClient.write(0, erro);
+                                    qClient.write(0, pv);
                                 } catch (QuanserClientException ex) {
                                     JOptionPane.showMessageDialog(null, "Erro de I/O");
                                 }
