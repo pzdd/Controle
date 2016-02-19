@@ -1155,14 +1155,10 @@ public class Main extends javax.swing.JFrame {
                                 }
                             }
                             if (sinalAtual == DENTE_DE_SERRA) {
-                                if(isMalhaAberta){
-                                    pv = amplitude * denteDeSerra(frequencia * Math.toRadians(x));
-                                }else{
-                                    pv = denteDeSerra(frequencia * Math.toRadians(x));
-                                }
+                                pv = denteDeSerra(x);
                             }
                             if (sinalAtual == SINAL_ALEATORIO) {
-
+                                
                             }
                             long tempoInicial = System.currentTimeMillis();
                             if (isMalhaAberta) {
@@ -1206,7 +1202,9 @@ public class Main extends javax.swing.JFrame {
                                     
                                     //erro = sp - pv;
                                     double erro = amplitude - nivelTanque1;
-                                    pv = erro/6.25;
+                                    if(erro < 1){
+                                        pv = erro;
+                                    }
                                     //travas
                                     if (tensaoTanque1 > 4) {
                                         pv = 4;
@@ -1246,7 +1244,7 @@ public class Main extends javax.swing.JFrame {
                             }
                            
                             if(!jToggleButton1.isSelected()){
-                                Thread.currentThread().interrupt();
+                                Thread.currentThread().stop();
                             }
                         }
                     }
@@ -1254,8 +1252,8 @@ public class Main extends javax.swing.JFrame {
                         start();
                 criandoGrafico(0,0);
                 //atualizando os niveis dos tanques
-                jProgressBar1.setValue(Integer.parseInt(String.valueOf(nivelTanque1)));
-                jProgressBar2.setValue(Integer.parseInt(String.valueOf(nivelTanque2)));
+                jProgressBar1.setValue((int)nivelTanque1);
+                jProgressBar2.setValue((int)nivelTanque2);
 
             }
         } else {
@@ -1382,97 +1380,7 @@ public class Main extends javax.swing.JFrame {
         jTextField3.setEnabled(true);
 
     }
-    //Classe responsável pela thread que irá coletar os dados
-/*Não precisou
-    public class ThreadDados extends Thread {
-
-        double pv;
-
-        public ThreadDados(double pv) {
-            this.pv = pv;
-        }
-
-        @Override
-        public void run() {
-            long tempoInicial = System.currentTimeMillis();
-            if (isMalhaAberta) {
-                try {
-                    //leitura
-                    double tensaoTanque1 = qClient.read(0);
-                    double tensaoTanque2 = qClient.read(1);
-                    //calculos
-                    double nivelTanque1 = tensaoTanque1 * 6.25;
-                    double nivelTanque2 = tensaoTanque2 * 6.25;
-                    //travas
-                    if (tensaoTanque1 > 4) {
-                        pv = 4;
-                    }
-                    if (tensaoTanque1 < -4) {
-                        pv = -4;
-                    }
-                    if (nivelTanque1 < 3 && tensaoTanque1 < 0) {
-                        pv = 0;
-                    }
-                    if (nivelTanque1 > 28 && tensaoTanque1 > 3.25) {
-                        pv = 3.25;
-                    }
-                    if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
-                        pv = 0;
-                    }
-                    //escrita
-                    qClient.write(0, pv);
-                } catch (QuanserClientException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro de I/O");
-                }
-            }
-            if (!isMalhaAberta) {
-                try {
-                    //leitura
-                    double tensaoTanque1 = qClient.read(0);
-                    double tensaoTanque2 = qClient.read(1);
-                    //calculos
-                    double nivelTanque1 = tensaoTanque1 * 6.25;
-                    double nivelTanque2 = tensaoTanque2 * 6.25;
-                    //travas
-                    if (tensaoTanque1 > 4) {
-                        pv = 4;
-                    }
-                    if (tensaoTanque1 < -4) {
-                        pv = -4;
-                    }
-                    if (nivelTanque1 < 3 && tensaoTanque1 < 0) {
-                        pv = 0;
-                    }
-                    if (nivelTanque1 > 28 && tensaoTanque1 > 3.25) {
-                        pv = 3.25;
-                    }
-                    if (nivelTanque1 > 29 && tensaoTanque1 > 0) {
-                        pv = 0;
-                    }
-                    //erro = sinal desejado - sinal lido
-                    double erro = pv - tensaoTanque1;
-                    //escrita
-                    qClient.write(0, erro);
-                } catch (QuanserClientException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro de I/O");
-                }
-            }
-            long tempoFinal = System.currentTimeMillis();
-            long resto = tempoFinal - tempoInicial;
-            if (resto < 100) {
-                try {
-                    Thread.sleep(resto);
-                    Thread.currentThread().interrupt();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-    */
-
+    
     private void criandoGrafico(double xLido, double yLido) {
         //dados do gráfico
         //esses dados serão oriundos das leitura das threads
@@ -1526,7 +1434,11 @@ public class Main extends javax.swing.JFrame {
     }
 
     private double denteDeSerra(double x) {
-        return Math.asin(Math.sin(1 * 2 * Math.PI * x / 60));
+        if(isMalhaAberta){
+            return amplitude * ((2*amplitude/periodo) *(x % periodo) -offSet);
+        }else{
+            return 4 * ((2*4/periodo) * (x % periodo) - offSet);
+        }
     }
 
     /**
